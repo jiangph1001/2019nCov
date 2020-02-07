@@ -9,38 +9,38 @@ import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from matplotlib import pyplot as plt
+
+
 begin_day = 1
 day_num = 25
+predict_day = 1
 
 
-def get_feature(degree,day_range):
+## 生成包含疑似人数的特征
+def get_feature_by_suspect(degree,day_range):
     poly_reg = PolynomialFeatures(degree=degree)
     x_poly = poly_reg.fit_transform(day_range)
-    #print(x_poly)
-    suspect = data[3]#.reshape(-1,1)
+    suspect = data[3]
     new = np.zeros((3,3))
-    #print(new)
     for i in range(3,day_range.size):
-        #print(x_poly[i])
-        #print(suspect[i])
-        #print(suspect[i-3:i])
         new = np.vstack((new,suspect[i-3:i]))
-        #print(new)
-        #print("------------------------------")
     comb = np.hstack((x_poly,new))
     return comb
 
-def predict_by_suspect(clf,data,rown,degree,color):
-    comb = get_feature(degree,data[0].reshape(-1,1))
+## 根据疑似人数来生成预测
+def predict_by_suspect(clf,data,rown,degree,color,label):
+    comb = get_feature_by_suspect(degree,data[0].reshape(-1,1))
     #print(comb)
     clf.fit(comb,data[rown].reshape(-1,1))
     day_range=np.linspace(begin_day,begin_day + day_num - 1,day_num) # [1,2,...,day_num]
-    result = clf.predict(get_feature(degree,day_range.reshape(-1,1)))
+    result = clf.predict(get_feature_by_suspect(degree,day_range.reshape(-1,1)))
     print("                            ",np.around(result[-1],decimals=1))
-    plt.plot(day_range,result,color=color,linestyle='--',marker='.',label='predict')
+    plt.plot(day_range,result,color=color,linestyle='--',marker='.',label=label)
     #print(clf.coef_)
-    
-def predict_new(clf,data,rown,degree,color):
+
+
+## 回归的具体实现
+def predict_new(clf,data,rown,degree,color,label):
     poly_reg = PolynomialFeatures(degree=degree)
     x_poly = poly_reg.fit_transform(data[0].reshape(-1,1))
     #print(x_poly)
@@ -48,26 +48,32 @@ def predict_new(clf,data,rown,degree,color):
     day_range=np.linspace(begin_day,begin_day + day_num - 1,day_num) # [1,2,...,day_num]
     result = clf.predict(poly_reg.fit_transform(day_range.reshape(-1,1)))
     print("                            ",np.around(result[-1],decimals=1))
-    plt.plot(day_range,result,color=color,linestyle='--',marker='.',label='predict')
-    
+    plt.plot(day_range,result,color=color,linestyle='--',marker='.',label=label)
+
+
+## 进行预测
 def predict(clf,data):
-    rown=2
+    rown=2 # 1代表对武汉的确诊人数进行回归，2代表对总确诊人数进行回归,3代表对疑似人数进行回归，以此类推
     plt.figure()
-    predict_new(clf,data,rown,4,'red')
-    predict_new(clf,data,rown,5,'blue')
-    predict_new(clf,data,rown,6,'fuchsia')
-    predict_new(clf,data,rown,7,'orange')
-    predict_by_suspect(clf,data,2,4,'cyan')
-    predict_by_suspect(clf,data,2,5,'orange')
+    predict_new(clf,data,rown,4,'red','4')
+    predict_new(clf,data,rown,5,'blue','5')
+    predict_new(clf,data,rown,6,'fuchsia','6')
+    predict_new(clf,data,rown,7,'orange','7')
+    if rown == 2 and predict_day == 1:
+        predict_by_suspect(clf,data,2,4,'cyan','4+suspect')
+        predict_by_suspect(clf,data,2,5,'m','5+suspect')
     plt.plot(np.arange(1,len(data[0])+1),data[rown],color='g',linestyle='--',marker='o',label='true') # 画出真实值
     plt.title("2019-nCov")
     plt.legend()
     plt.show()
-    
+
+## 读取数据
 def read_data():
+    global day_num
     with open("data.csv","r") as f:
-        data = np.loadtxt(f,delimiter = ",")
+        data = np.loadtxt(f,delimiter = ",",comments='#')
         data = data[...,:] # 对数据切片，回溯前几天的预测值，对比准确性时用到
+        day_num = len(data[0])+predict_day
         print()
         return data
         
