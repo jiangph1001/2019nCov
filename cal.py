@@ -53,7 +53,7 @@ def predict_new(clf,data,rown,degree,color,label):
 
 ## 进行预测
 def predict(clf,data):
-    rown=2 # 1代表对武汉的确诊人数进行回归，2代表对总确诊人数进行回归,3代表对疑似人数进行回归，以此类推
+    rown = 2 # 1代表对武汉的确诊人数进行回归，2代表对总确诊人数进行回归,3代表对疑似人数进行回归，以此类推
     plt.figure()
     predict_new(clf,data,rown,4,'red','4')
     predict_new(clf,data,rown,5,'blue','5')
