@@ -63,7 +63,7 @@ def predict(clf,data):
         predict_by_suspect(clf,data,2,4,'cyan','4+suspect')
         predict_by_suspect(clf,data,2,5,'m','5+suspect')
     plt.plot(np.arange(1,len(data[0])+1),data[rown],color='g',linestyle='--',marker='o',label='true') # 画出真实值
-    plt.title("2019-nCov")
+    plt.title("COVID-19")
     plt.legend()
     plt.show()
 
