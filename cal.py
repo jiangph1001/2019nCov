@@ -13,7 +13,7 @@ from matplotlib import pyplot as plt
 
 begin_day = 1
 day_num = 25
-predict_day = 1
+predict_day = 5
 flag = False #用于控制是否按疑似人数进行预测
 
 
@@ -54,7 +54,7 @@ def predict_new(clf,data,rown,degree,color,label):
 
 ## 进行预测
 def predict(clf,data):
-    rown = 2 # 1代表对武汉的确诊人数进行回归，2代表对总确诊人数进行回归,3代表对疑似人数进行回归，以此类推
+    rown = 6 # 1代表对武汉的确诊人数进行回归，2代表对总确诊人数进行回归,3代表对疑似人数进行回归，以此类推
     plt.figure()
     
     predict_new(clf,data,rown,4,'green','4')
