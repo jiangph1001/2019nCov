@@ -13,7 +13,7 @@ from matplotlib import pyplot as plt
 
 begin_day = 1
 day_num = 25
-predict_day = 5
+predict_day = 3
 flag = False #用于控制是否按疑似人数进行预测
 
 
