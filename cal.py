@@ -13,7 +13,7 @@ from matplotlib import pyplot as plt
 
 begin_day = 1
 day_num = 25
-predict_day = 3
+predict_day = 5
 flag = False #用于控制是否按疑似人数进行预测
 
 
@@ -60,7 +60,7 @@ def predict(clf,data):
     predict_new(clf,data,rown,4,'green','4')
     predict_new(clf,data,rown,5,'blue','5')
     predict_new(clf,data,rown,6,'fuchsia','6')
-    predict_new(clf,data,rown,7,'orange','7')
+    #predict_new(clf,data,rown,7,'orange','7')
     
     if rown == 2 and predict_day == 1 and flag == True:
         predict_by_suspect(clf,data,2,4,'cyan','4+suspect')
