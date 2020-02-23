@@ -59,7 +59,7 @@ def predict(clf,data):
     
     predict_new(clf,data,rown,4,'green','4')
     predict_new(clf,data,rown,5,'blue','5')
-    predict_new(clf,data,rown,6,'fuchsia','6')
+    #predict_new(clf,data,rown,6,'fuchsia','6')
     #predict_new(clf,data,rown,7,'orange','7')
     
     if rown == 2 and predict_day == 1 and flag == True:
